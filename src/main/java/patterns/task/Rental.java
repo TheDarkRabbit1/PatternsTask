@@ -1,5 +1,8 @@
 package patterns.task;
 
+import patterns.task.PriceCodes.NewRelease;
+import patterns.task.Movie.Movie;
+
 public class Rental {
     private final Movie movie;
     private final int daysRented;

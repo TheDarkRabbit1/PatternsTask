@@ -1,4 +1,4 @@
-package patterns.task;
+package patterns.task.PriceCodes;
 
 public class NewRelease implements MovieType {
     @Override

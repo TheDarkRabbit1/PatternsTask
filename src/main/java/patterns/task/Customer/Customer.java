@@ -1,8 +1,11 @@
-package patterns.task;
+package patterns.task.Customer;
 
+import patterns.task.Rental;
+
+import java.io.Serializable;
 import java.util.List;
 
-public class Customer {
+public class Customer implements Serializable {
     private final String name;
     private final List<Rental> rentals;
 
