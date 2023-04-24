@@ -4,23 +4,24 @@ import java.io.*;
 import java.util.List;
 
 public class CustomerDao {
+    private static CustomerDao instance = new CustomerDao();
     private List<Customer> customers;
-
-    public CustomerDao() {
+    public static CustomerDao getInstance(){
+        return instance;
+    }
+    private CustomerDao() {
         try {
             FileInputStream fileInputStream = new FileInputStream("customer_list.ch");
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             this.customers = (List<Customer>) objectInputStream.readObject();
             objectInputStream.close();
             fileInputStream.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
-    List<Customer> getCustomerList() {
+    List<Customer> getCustomers() {
         return this.customers;
     }
 

@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    public static final MovieDao movieDao = new MovieDao();
-    public static final CustomerDao customerDao = new CustomerDao();
+    public static final MovieDao movieDao = MovieDao.getInstance();
+    public static final CustomerDao customerDao = CustomerDao.getInstance();
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Main main = new Main();
