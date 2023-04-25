@@ -30,6 +30,22 @@ public class Movie implements Serializable {
         return shortDescription;
     }
 
+    public void setCountryOfProduction(String countryOfProduction) {
+        this.countryOfProduction = countryOfProduction;
+    }
+
+    public void setActors(List<String> actors) {
+        this.actors = actors;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
+
+    public void setPriceCode(MovieType priceCode) {
+        this.priceCode = priceCode;
+    }
+
     public MovieType getPriceCode() {
         return priceCode;
     }

@@ -1,5 +1,7 @@
 package patterns.task.Customer;
 
+import patterns.task.Movie.MovieDao;
+
 import java.io.*;
 import java.util.List;
 
@@ -7,6 +9,9 @@ public class CustomerDao {
     private static CustomerDao instance = new CustomerDao();
     private List<Customer> customers;
     public static CustomerDao getInstance(){
+        if(instance == null){
+            instance = new CustomerDao();
+        }
         return instance;
     }
     private CustomerDao() {

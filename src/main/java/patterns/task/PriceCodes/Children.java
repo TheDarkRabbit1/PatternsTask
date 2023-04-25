@@ -1,6 +1,7 @@
 package patterns.task.PriceCodes;
 
-public class Children implements MovieType {
+
+public class Children implements MovieType{
     @Override
     public double getAmount(int daysRented) {
         double res = 1.5;

@@ -4,29 +4,46 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MovieService {
-    private final MovieDao movieDao = MovieDao.getInstance();
     private static MovieService instance;
-    public synchronized static MovieService getInstance(){
-        if(instance == null){
+    private final MovieDao movieDao = MovieDao.getInstance();
+
+    public synchronized static MovieService getInstance() {
+        if (instance == null) {
             instance = new MovieService();
         }
         return instance;
     }
-    public List<Movie> getMovies(){
+
+    public List<Movie> getMovies() {
         return movieDao.getMovies();
     }
-    public void addMovie(Movie movie){
+
+    public void addMovie(Movie movie) {
+        if (movieDao.getMovies().stream().anyMatch(m -> m.getTitle().equals(movie.getTitle()))) {
+            System.out.println("Movie with this title already exists");
+            return;
+        }
         movieDao.addMovie(movie);
     }
+
+    public void updateMovie(Movie newMovie) {
+        Movie movieByTitle = movieDao.getMovies().stream()
+                .filter(m -> m.getTitle().toLowerCase().equals(newMovie.getTitle().toLowerCase()))
+                .findFirst()
+                .orElseThrow();
+        movieDao.removeMovie(movieByTitle);
+        movieDao.addMovie(newMovie);
+    }
+
     public List<Movie> getMovieByTitle(String title) {
         return movieDao.getMovies().stream()
-                .filter(movie -> movie.getTitle().equals(title))
+                .filter(movie -> movie.getTitle().toLowerCase().equals(title.toLowerCase()))
                 .collect(Collectors.toList());
     }
 
     public List<Movie> getMovieByCOP(String cop) {
         return movieDao.getMovies().stream()
-                .filter(movie -> movie.getCountryOfProduction().equals(cop))
+                .filter(movie -> movie.getCountryOfProduction().toLowerCase().equals(cop.toLowerCase()))
                 .collect(Collectors.toList());
     }
 
@@ -35,7 +52,10 @@ public class MovieService {
                 .filter(movie -> movie.getActors().contains(actor))
                 .collect(Collectors.toList());
     }
-    public void close(){
+
+    public void close() {
         movieDao.close();
     }
+
+
 }

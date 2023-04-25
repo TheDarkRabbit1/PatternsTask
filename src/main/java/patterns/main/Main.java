@@ -1,11 +1,13 @@
 package patterns.main;
 
-import patterns.task.Customer.CustomerDao;
 import patterns.task.Customer.CustomerService;
 import patterns.task.Movie.Movie;
-import patterns.task.Movie.MovieDao;
 import patterns.task.Movie.MovieService;
+import patterns.task.PriceCodes.Children;
+import patterns.task.PriceCodes.NewRelease;
+import patterns.task.PriceCodes.Regular;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -22,6 +24,7 @@ public class Main {
                 case 1 -> main.getAllMovies();
                 case 2 -> main.addMovie();
                 case 3 -> main.searchMovieByMenu();
+                case 4 -> main.editMovie();
                 case 0 -> {
                     main.saveAndLeave();
                     return;
@@ -29,6 +32,46 @@ public class Main {
                 default -> System.out.println("No such option in menu");
             }
         }
+    }
+
+    private void editMovie() {
+        List<Movie> movies = searchMovieByMenu();
+        if (movies.isEmpty()) {
+            System.out.println("No movies to be edited");
+            return;
+        }
+        System.out.println("Pick Movie to be edited:");
+        for (int i = 0; i < movies.size(); i++) {
+            System.out.println(i + " - " + movies.get(i).toString());
+        }
+        movieService.updateMovie(
+                fillMovieInfo(
+                        movies.get(scanner.nextInt())
+                ));
+    }
+
+    private Movie fillMovieInfo(Movie movie) {
+        System.out.print("""
+                input field distinguished by line, args by whitespaces:
+                Country of production
+                Price code
+                Actors
+                Short description
+                """);
+        String COP = scanner.next();
+        COP += scanner.nextLine();
+        String priceCode = scanner.nextLine();
+        List<String> actors = Arrays.stream(scanner.nextLine().split(" ")).toList();
+        String description = scanner.nextLine();
+        switch (priceCode.toLowerCase()) {
+            case "children" -> movie.setPriceCode(new Children());
+            case "regular" -> movie.setPriceCode(new Regular());
+            case "new", "newrelease" -> movie.setPriceCode(new NewRelease());
+        }
+        movie.setCountryOfProduction(COP);
+        movie.setActors(actors);
+        movie.setShortDescription(description);
+        return movie;
     }
 
     private void getAllMovies() {
@@ -51,15 +94,17 @@ public class Main {
     }
 
 
-    private void searchMovieByMenu() {
-        System.out.println("find movie by:");
-        System.out.println("1 - title");
-        System.out.println("2 - country of production");
-        System.out.println("3 - actor");
+    private List<Movie> searchMovieByMenu() {
+        System.out.print("""
+                Find movie by:
+                1 - title
+                2 - country of production
+                3 - actor
+                """);
         List<Movie> movies = List.of();
         int choice = scanner.nextInt();
         String param = scanner.next();
-        param+=scanner.nextLine();
+        param += scanner.nextLine();
         switch (choice) {
             case 1 -> movies = movieService.getMovieByTitle(param);
             case 2 -> movies = movieService.getMovieByCOP(param);
@@ -71,6 +116,7 @@ public class Main {
         } else {
             movies.forEach(movie -> System.out.println(movie.toString()));
         }
+        return movies;
     }
 
     private void saveAndLeave() {
@@ -79,9 +125,12 @@ public class Main {
     }
 
     private void MainMenu() {
-        System.out.println("1 - Output all Films");
-        System.out.println("2 - Add new Film");
-        System.out.println("3 - Search Film By");
+        System.out.println("""
+                1 - Output all Films
+                2 - Add new Film
+                3 - Search Film By
+                4 - Edit film info
+                """);
     }
 }
 

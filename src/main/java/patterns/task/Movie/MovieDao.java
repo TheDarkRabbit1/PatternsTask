@@ -45,7 +45,9 @@ public class MovieDao{
     public void addMovie(Movie movie) {
         this.movies.add(movie);
     }
-
+    public void removeMovie(Movie movie){
+        this.movies.remove(movie);
+    }
     public void close(){
         try(FileOutputStream fileOutputStream = new FileOutputStream("movie_list.ch");
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)){
