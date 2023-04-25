@@ -34,6 +34,17 @@ public class Movie implements Serializable {
         return priceCode;
     }
 
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "title='" + title + '\'' +
+                ", countryOfProduction='" + countryOfProduction + '\'' +
+                ", actors=" + actors +
+                ", shortDescription='" + shortDescription + '\'' +
+                ", priceCode=" + priceCode +
+                '}';
+    }
+
     public static class Builder {
         private String title;
         private String countryOfProduction;

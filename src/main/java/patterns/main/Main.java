@@ -1,66 +1,87 @@
 package patterns.main;
 
-import patterns.task.*;
-import patterns.task.Customer.Customer;
 import patterns.task.Customer.CustomerDao;
-import patterns.task.Movie.MovieDao;
-import patterns.task.PriceCodes.Children;
-import patterns.task.PriceCodes.NewRelease;
-import patterns.task.PriceCodes.Regular;
+import patterns.task.Customer.CustomerService;
 import patterns.task.Movie.Movie;
+import patterns.task.Movie.MovieDao;
+import patterns.task.Movie.MovieService;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    public static final MovieDao movieDao = MovieDao.getInstance();
-    public static final CustomerDao customerDao = CustomerDao.getInstance();
+    public static final MovieService movieService = MovieService.getInstance();
+    public static final CustomerService customerService = CustomerService.getInstance();
+    public static final Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
         Main main = new Main();
         while (true) {
             main.MainMenu();
             switch (scanner.nextInt()) {
-                case 1 -> main.getAllFilms();
-                case 2 -> main.addFilm();
-                case 3 -> main.searchFilmByMenu();
-                case 0 -> {return;}
+                case 1 -> main.getAllMovies();
+                case 2 -> main.addMovie();
+                case 3 -> main.searchMovieByMenu();
+                case 0 -> {
+                    main.saveAndLeave();
+                    return;
+                }
                 default -> System.out.println("No such option in menu");
             }
         }
     }
-    private void getAllFilms(){
 
+    private void getAllMovies() {
+        List<Movie> movies = movieService.getMovies();
+        if (movies == null || movies.isEmpty()) {
+            System.out.println("Currently no saved movies");
+            return;
+        }
+        movies.forEach(movie -> System.out.println(movie.toString()));
     }
-    private void addFilm(){
 
+    private void addMovie() {
+        System.out.println("Enter title for new movie: ");
+        String title = scanner.next();
+        title += scanner.nextLine();
+        Movie movie = new Movie.Builder()
+                .title(title)
+                .build();
+        movieService.addMovie(movie);
     }
-    private void searchFilmByMenu(){
 
+
+    private void searchMovieByMenu() {
+        System.out.println("find movie by:");
+        System.out.println("1 - title");
+        System.out.println("2 - country of production");
+        System.out.println("3 - actor");
+        List<Movie> movies = List.of();
+        int choice = scanner.nextInt();
+        String param = scanner.next();
+        param+=scanner.nextLine();
+        switch (choice) {
+            case 1 -> movies = movieService.getMovieByTitle(param);
+            case 2 -> movies = movieService.getMovieByCOP(param);
+            case 3 -> movies = movieService.getMovieByActor(param);
+            default -> System.out.println("Wrong Value");
+        }
+        if (movies.isEmpty()) {
+            System.out.println("No Movie was found");
+        } else {
+            movies.forEach(movie -> System.out.println(movie.toString()));
+        }
     }
-    private void MainMenu(){
+
+    private void saveAndLeave() {
+        movieService.close();
+        customerService.close();
+    }
+
+    private void MainMenu() {
         System.out.println("1 - Output all Films");
         System.out.println("2 - Add new Film");
         System.out.println("3 - Search Film By");
-    }
-    private void run() {
-        List<Rental> rentals = List.of(
-                new Rental(new Movie.Builder()
-                        .priceCode(new Regular())
-                        .title("Rambo")
-                        .build(),1),
-                new Rental(new Movie.Builder()
-                        .title("Lord of the Rings")
-                        .priceCode(new NewRelease())
-                        .build(),4),
-                new Rental(new Movie.Builder()
-                        .title("Harry Potter")
-                        .priceCode(new Children())
-                        .build(),5)
-        );
-        Customer customer = new Customer("John Doe", rentals);
-        String statement = customer.statement();
-        System.out.println(statement);
     }
 }
 

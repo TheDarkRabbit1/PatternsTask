@@ -10,28 +10,33 @@ public class CustomerDao {
         return instance;
     }
     private CustomerDao() {
-        try {
-            FileInputStream fileInputStream = new FileInputStream("customer_list.ch");
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+        try (FileInputStream fileInputStream = new FileInputStream("customer_list.ch");
+             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)){
             this.customers = (List<Customer>) objectInputStream.readObject();
-            objectInputStream.close();
-            fileInputStream.close();
+        } catch (FileNotFoundException e){
+            createEmptySaveFile();
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
-    List<Customer> getCustomers() {
+    private void createEmptySaveFile() {
+        try(FileOutputStream fileOutputStream = new FileOutputStream("customer_list.ch");
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)){
+            objectOutputStream.writeObject(List.of());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Customer> getCustomers() {
         return this.customers;
     }
 
-    void saveCustomerList(List<Customer> list){
-        try{
-            FileOutputStream fileOutputStream = new FileOutputStream("customer_list.ch");
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(list);
-            objectOutputStream.close();
-            fileOutputStream.close();
+    public void close(){
+        try(FileOutputStream fileOutputStream = new FileOutputStream("customer_list.ch");
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)){
+            objectOutputStream.writeObject(this.customers);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
