@@ -1,6 +1,7 @@
 package patterns.task.Movie;
 
-import patterns.task.PriceCodes.MovieType;
+import patterns.task.Movie.Genres.Genre;
+import patterns.task.Movie.PriceCodes.MovieType;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,6 +12,7 @@ public class Movie implements Serializable {
     private List<String> actors;
     private String shortDescription;
     private MovieType priceCode;
+    private Genre genre;
     private Movie() {
     }
 
@@ -58,6 +60,7 @@ public class Movie implements Serializable {
                 ", actors=" + actors +
                 ", shortDescription='" + shortDescription + '\'' +
                 ", priceCode=" + priceCode +
+                ", genre=" + genre +
                 '}';
     }
 
@@ -67,7 +70,7 @@ public class Movie implements Serializable {
         private List<String> actors;
         private MovieType priceCode;
         private String shortDescription;
-
+        private Genre genre;
         public Builder title(String title) {
             this.title = title;
             return this;
@@ -92,6 +95,10 @@ public class Movie implements Serializable {
             this.shortDescription = shortDescription;
             return this;
         }
+        public Builder genre(Genre genre){
+            this.genre=genre;
+            return this;
+        }
 
         public Movie build() {
             Movie movie = new Movie();
@@ -100,6 +107,7 @@ public class Movie implements Serializable {
             movie.title = title;
             movie.priceCode = priceCode;
             movie.shortDescription = shortDescription;
+            movie.genre=genre;
             return movie;
         }
     }

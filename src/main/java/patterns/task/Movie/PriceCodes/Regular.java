@@ -1,6 +1,4 @@
-package patterns.task.PriceCodes;
-
-import patterns.task.PriceCodes.MovieType;
+package patterns.task.Movie.PriceCodes;
 
 public class Regular implements MovieType {
     @Override

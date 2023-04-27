@@ -4,9 +4,9 @@ import patterns.task.Customer.Customer;
 import patterns.task.Customer.CustomerService;
 import patterns.task.Movie.Movie;
 import patterns.task.Movie.MovieService;
-import patterns.task.PriceCodes.Children;
-import patterns.task.PriceCodes.NewRelease;
-import patterns.task.PriceCodes.Regular;
+import patterns.task.Movie.PriceCodes.Children;
+import patterns.task.Movie.PriceCodes.NewRelease;
+import patterns.task.Movie.PriceCodes.Regular;
 import patterns.task.Rental;
 
 import java.util.*;

@@ -1,6 +1,6 @@
 package patterns.task;
 
-import patterns.task.PriceCodes.NewRelease;
+import patterns.task.Movie.PriceCodes.NewRelease;
 import patterns.task.Movie.Movie;
 
 import java.io.Serializable;

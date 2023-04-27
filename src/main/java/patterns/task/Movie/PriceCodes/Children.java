@@ -1,4 +1,4 @@
-package patterns.task.PriceCodes;
+package patterns.task.Movie.PriceCodes;
 
 
 public class Children implements MovieType{
