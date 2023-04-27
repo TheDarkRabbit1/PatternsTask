@@ -37,13 +37,13 @@ public class MovieService {
 
     public List<Movie> getMovieByTitle(String title) {
         return movieDao.getMovies().stream()
-                .filter(movie -> movie.getTitle().toLowerCase().equals(title.toLowerCase()))
+                .filter(movie -> movie.getTitle().toLowerCase().contains(title.toLowerCase()))
                 .collect(Collectors.toList());
     }
 
     public List<Movie> getMovieByCOP(String cop) {
         return movieDao.getMovies().stream()
-                .filter(movie -> movie.getCountryOfProduction().toLowerCase().equals(cop.toLowerCase()))
+                .filter(movie -> movie.getCountryOfProduction().toLowerCase().contains(cop.toLowerCase()))
                 .collect(Collectors.toList());
     }
 

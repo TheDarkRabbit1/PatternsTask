@@ -1,6 +1,7 @@
 package patterns.task.Customer;
 
 import java.io.*;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +26,10 @@ public class CustomerDao {
         }
         if (this.customers==null)
             customers=new ArrayList<>();
+        if (this.customers instanceof AbstractList) {
+            this.customers = new ArrayList<>(this.customers);
+        }
+
     }
 
     private void createEmptySaveFile() {
@@ -42,8 +47,8 @@ public class CustomerDao {
     public void addCustomer(Customer customer){
         this.customers.add(customer);
     }
-    public void removeCustomer(Customer customer){
-        this.customers.remove(customer);
+    public void removeCustomer(String name){
+        this.customers.removeIf(customer -> customer.getName().equals(name));
     }
 
     public void close(){
