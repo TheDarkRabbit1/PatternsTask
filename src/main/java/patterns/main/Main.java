@@ -2,6 +2,9 @@ package patterns.main;
 
 import patterns.task.Customer.Customer;
 import patterns.task.Customer.CustomerService;
+import patterns.task.Movie.Genres.Comedy;
+import patterns.task.Movie.Genres.Drama;
+import patterns.task.Movie.Genres.Thriller;
 import patterns.task.Movie.Movie;
 import patterns.task.Movie.MovieService;
 import patterns.task.Movie.PriceCodes.Children;
@@ -106,28 +109,36 @@ public class Main {
             System.out.println(i + " - " + movies.get(i).toString());
         }
         movieService.updateMovie(
-                fillMovieInfo(
-                        movies.get(scanner.nextInt())
-                ));
+                fillMovieInfo(movies.get(scanner.nextInt())));
     }
 
     private Movie fillMovieInfo(Movie movie) {
         System.out.print("""
                 input field distinguished by line, args by whitespaces:
                 Country of production
+                Genre
                 Price code
                 Actors
-                Short description
+                Short description           
                 """);
         String COP = scanner.next();
         COP += scanner.nextLine();
+        String genreName = scanner.nextLine();
         String priceCode = scanner.nextLine();
         List<String> actors = Arrays.stream(scanner.nextLine().split(" ")).toList();
         String description = scanner.nextLine();
+
         switch (priceCode.toLowerCase()) {
             case "children" -> movie.setPriceCode(new Children());
             case "regular" -> movie.setPriceCode(new Regular());
             case "new", "newrelease" -> movie.setPriceCode(new NewRelease());
+            default -> System.out.println("no such price code as:"+priceCode);
+        }
+        switch (genreName.toLowerCase()){
+            case "comedy"->movie.setGenre(new Comedy());
+            case "drama"->movie.setGenre(new Drama());
+            case "thriller"->movie.setGenre(new Thriller());
+            default -> System.out.println("no such genre as:"+genreName);
         }
         movie.setCountryOfProduction(COP);
         movie.setActors(actors);
@@ -161,6 +172,7 @@ public class Main {
                 1 - title
                 2 - country of production
                 3 - actor
+                4 - genre
                 """);
         List<Movie> movies = List.of();
         int choice = scanner.nextInt();
@@ -170,6 +182,7 @@ public class Main {
             case 1 -> movies = movieService.getMovieByTitle(param);
             case 2 -> movies = movieService.getMovieByCOP(param);
             case 3 -> movies = movieService.getMovieByActor(param);
+            case 4 -> movies = movieService.getMovieByGenre(param);
             default -> System.out.println("Wrong Value");
         }
         if (movies.isEmpty()) {
@@ -187,11 +200,12 @@ public class Main {
 
     private void MainMenu() {
         System.out.println("""
-                1 - Output all Films
-                2 - Add new Film
-                3 - Search Film By
-                4 - Edit film info
+                1 - Output all Movies
+                2 - Add new Movie
+                3 - Search Movie By
+                4 - Edit movie info
                 5 - Customer menu
+                0 - Save and exit
                 """);
     }
 }

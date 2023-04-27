@@ -28,7 +28,7 @@ public class MovieService {
 
     public void updateMovie(Movie newMovie) {
         Movie movieByTitle = movieDao.getMovies().stream()
-                .filter(m -> m.getTitle().toLowerCase().equals(newMovie.getTitle().toLowerCase()))
+                .filter(m -> m.getTitle().equalsIgnoreCase(newMovie.getTitle()))
                 .findFirst()
                 .orElseThrow();
         movieDao.removeMovie(movieByTitle);
@@ -52,10 +52,14 @@ public class MovieService {
                 .filter(movie -> movie.getActors().contains(actor))
                 .collect(Collectors.toList());
     }
-
+    public List<Movie> getMovieByGenre(String param) {
+        return movieDao.getMovies().stream()
+                .filter(m-> m.getGenre()
+                        .getGenreName()
+                        .equalsIgnoreCase(param))
+                .collect(Collectors.toList());
+    }
     public void close() {
         movieDao.close();
     }
-
-
 }

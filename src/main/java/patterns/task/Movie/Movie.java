@@ -52,6 +52,14 @@ public class Movie implements Serializable {
         return priceCode;
     }
 
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
     @Override
     public String toString() {
         return "Movie{" +
